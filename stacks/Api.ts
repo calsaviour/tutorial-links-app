@@ -1,8 +1,13 @@
 import { use, StackContext, Api as ApiGateway } from "sst/constructs";
 import { Database } from "./Database.js";
 
-export function Api({ stack }: StackContext) {
+export function Api({ stack, app }: StackContext) {
+  const stage = app.stage;
   const api = new ApiGateway(stack, "api", {
+    customDomain: {
+      domainName: `api-reddit-${stage}.moonmoon.link`,
+      hostedZone: "moonmoon.link"
+    },
     defaults: {
       function: {
         bind: [use(Database)],
